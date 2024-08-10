@@ -57,7 +57,7 @@ jobs:
     # Setup python docker and environment
     executor: python
     environment:
-      CC_TEST_REPORTER_ID: 939f0fd88cd52a051d35e26cca5e8e2941dca1c0fe2b2ce9771ed4791884bee5
+      CC_TEST_REPORTER_ID: 7b937cd9a0339675686ec07687f790ae70de84f3f670ec53c0e9b5689a203176
     steps:
       - checkout
       # Attach the build repo and test-reporter from previous job

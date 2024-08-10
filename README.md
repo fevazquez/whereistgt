@@ -1,9 +1,12 @@
 <div align="center">
   <h1>whereistgt.com</h1>
-  <h2>Investing In Friendship</h2>
   <p>
-    A commitment through The Guys Trip (TGT), a derivative of <a href="https://tgtsurf.com">the original tgtsurf.com</a>
+    Investing In Friendship. A commitment through The Guys Trip (TGT), a derivative of <a href="https://tgtsurf.com">the original tgtsurf.com</a>
   </p>
+
+  [![CircleCI](https://dl.circleci.com/status-badge/img/gh/fevazquez/whereistgt/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/fevazquez/whereistgt/tree/main)
+  [![Maintainability](https://api.codeclimate.com/v1/badges/0087ee8938982799d868/maintainability)](https://codeclimate.com/github/fevazquez/whereistgt/maintainability)
+  [![Test Coverage](https://api.codeclimate.com/v1/badges/0087ee8938982799d868/test_coverage)](https://codeclimate.com/github/fevazquez/whereistgt/test_coverage)
 </div>
 
 <br />

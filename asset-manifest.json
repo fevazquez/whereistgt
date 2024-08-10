@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "https://whereistgt.com/static/js/main.7dcc0c33.js",
+    "static/js/453.0f211581.chunk.js": "https://whereistgt.com/static/js/453.0f211581.chunk.js",
+    "index.html": "https://whereistgt.com/index.html",
+    "main.7dcc0c33.js.map": "https://whereistgt.com/static/js/main.7dcc0c33.js.map",
+    "453.0f211581.chunk.js.map": "https://whereistgt.com/static/js/453.0f211581.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.7dcc0c33.js"
+  ]
+}

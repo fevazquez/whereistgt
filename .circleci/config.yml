@@ -1,0 +1,134 @@
+version: 2.1
+
+orbs:
+  browser-tools: circleci/browser-tools@1.4.0
+
+# Create multiple dockers for different job environment
+executors:
+  nodejs:
+    # Used for build and test coverage report
+    docker:
+      - image: cimg/node:lts
+  python:
+    # Used for selenium python testing
+    docker:
+      - image: circleci/python:3.10-browsers
+
+jobs:
+  build:
+    # Set up nodejs docker and directories
+    executor: nodejs
+    working_directory: /home/circleci/project
+    steps:
+      - checkout
+      - run:
+          name: Update npm
+          command: "sudo npm install -g npm@latest"
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          # Install selenium
+          name: Install Selenium
+          command: sudo npm install selenium-webdriver
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          # Download code climate test reporter to circle ci environment
+          name: Download cc-test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run:
+          # Visual test to see everything is setup
+          name: Check Repo
+          command: ls
+      - persist_to_workspace:
+          # Save the build repo and test-reporter to cache
+          root: /home/circleci
+          paths:
+            - project
+
+  test:
+    # Setup python docker and environment
+    executor: python
+    environment:
+      CC_TEST_REPORTER_ID: 939f0fd88cd52a051d35e26cca5e8e2941dca1c0fe2b2ce9771ed4791884bee5
+    steps:
+      - checkout
+      # Attach the build repo and test-reporter from previous job
+      - attach_workspace:
+          at: /home/circleci/project
+
+      # Set up chrome for the environment
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - run:
+          # Visual check to see everything is in place
+          name: Checkout Repo
+          command: |
+            ls -a
+            pwd
+            ls -a project/
+            rm -r project/test
+      - run:
+          # Set up selenium for python environment
+          name: Selenium setup
+          command: sudo pip install selenium
+      - run:
+          # Notify the test reporter that test is going to start
+          name: Notify CC before tests
+          command: ./project/cc-test-reporter before-build
+
+  jest-and-upload-coverage:
+    # Setup nodejs docker and environment
+    executor: nodejs
+    environment:
+      CC_TEST_REPORTER_ID: 7b937cd9a0339675686ec07687f790ae70de84f3f670ec53c0e9b5689a203176
+    steps:
+      - checkout
+      # Attach the build repo and test-reporter from previous job
+      - attach_workspace:
+          at: /home/circleci/project
+      - run:
+          # Visual check to see everything is in place
+          name: Checkout Repo
+          command: |
+            ls -a
+            pwd
+            ls -a project/
+            rm -r project/test
+      - run:
+          # Install latest npm
+          name: Update npm
+          command: sudo npm install -g npm@latest
+      - run:
+          # Install all the packages from package.json
+          name: Install dependencies
+          command: sudo npm install
+      - run:
+          # Run jest unit tests and generate reports
+          name: Run Jest tests
+          command: sudo npm run test
+      - run:
+          # Upload the code climate report
+          name: Upload test report
+          command: ./project/cc-test-reporter after-build --debug -t lcov
+
+workflows:
+  version: 2
+  build_and_test:
+    # The order is build -> test -> upload-coverage
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - jest-and-upload-coverage:
+          requires:
+            - build
+            - test

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
   <h1>whereistgt.com</h1>
   <h2>Investing In Friendship</h2>
@@ -86,3 +87,6 @@ The build is minified and the filenames include the hashes.
 Fernando Vazquez - f4vazquez@gmail.com
 
 Warren Ngoun - warren.ngoun@gmail.com
+=======
+# whereistgt
+>>>>>>> e682fbc2fc1cab870856f241a5c339c8a099f2a7

@@ -37,7 +37,7 @@ const App =()=> {
             <HomePage />
           }
         />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} status={404} />
       </Routes>
     </ThemeProvider>
   );

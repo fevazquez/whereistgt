@@ -5,7 +5,7 @@ ENV BUNDLE_SILENCE_ROOT_WARNING=1
 
 RUN apt-get update && apt-get -y install curl gnupg unzip wget
 
-# Install Nginx.
+# Install Nginx
 RUN set -ex &&\
   apt-get install -y software-properties-common &&\
   add-apt-repository -y ppa:nginx/stable &&\
@@ -14,9 +14,9 @@ RUN set -ex &&\
   chown -R www-data:www-data /var/lib/nginx
 
 # Copy nginx config
-COPY nginx/nginx.conf /etc/nginx/modules-enabled/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Set the Chrome repo.
+# Set the Chrome repo
 RUN wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -\ 
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
 RUN apt-get update && apt-get -y install google-chrome-stable
@@ -38,12 +38,11 @@ EXPOSE 80
 # Install python3
 RUN apt-get install -y python3 python3-distutils python3-apt
 RUN curl -sL https://bootstrap.pypa.io/get-pip.py | python3
-RUN pip -V
 
 # Chrome Driver
 RUN mkdir -p /opt/selenium\
-    && wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.119/linux64/chrome-linux64.zip -O /opt/selenium/chrome-linux64.zip\
-    && cd /opt/selenium; unzip /opt/selenium/chrome-linux64.zip; rm -rf chrome-linux64.zip; ln -fs /opt/selenium/chromedriver /usr/local/bin/chromedriver;
+  && wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.119/linux64/chrome-linux64.zip -O /opt/selenium/chrome-linux64.zip\
+  && cd /opt/selenium; unzip /opt/selenium/chrome-linux64.zip; rm -rf chrome-linux64.zip; ln -fs /opt/selenium/chromedriver /usr/local/bin/chromedriver;
 
 # Install python dependencies
 RUN pip install setuptools pip --upgrade --force-reinstall

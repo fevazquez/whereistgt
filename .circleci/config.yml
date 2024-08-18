@@ -64,9 +64,6 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project
 
-      # Set up chrome for the environment
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - run:
           # Visual check to see everything is in place
           name: Checkout Repo
@@ -76,13 +73,16 @@ jobs:
             ls -a project/
             rm -r project/test
       - run:
-          # Set up selenium for python environment
-          name: Selenium setup
-          command: sudo pip install selenium
-      - run:
           # Notify the test reporter that test is going to start
           name: Notify CC before tests
           command: ./project/cc-test-reporter before-build
+          # Build docker image and run tests on the nginx server
+      - run:
+          name: Build docker image
+          command: docker build --no-cache -t e2e-test .
+      - run:
+          name: Run selenium tests
+          command: docker run -p 80:80 --rm e2e-test
 
   jest-and-upload-coverage:
     # Setup nodejs docker and environment

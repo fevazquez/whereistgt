@@ -59,17 +59,23 @@ Install dependencies
   npm install
 ```
 
-Start the server
-
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ```bash
   npm start
 ```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### :memo: Running tests
 
+Runs all unit tests
 ```bash
   npm test
+```
+
+Running selenium tests:
+```bash
+docker build --no-cache -t e2e-test .
+docker run -p 80:80 --rm e2e-test
 ```
 
 Launches the test runner in the interactive watch mode.\

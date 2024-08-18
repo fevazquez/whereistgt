@@ -64,6 +64,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci/project
 
+      - setup_remote_docker
       - run:
           # Visual check to see everything is in place
           name: Checkout Repo

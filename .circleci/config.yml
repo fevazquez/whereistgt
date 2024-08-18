@@ -3,16 +3,16 @@ version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.0
 
-# Create multiple dockers for different job environment
+# Create multiple dockers for different job environments
 executors:
   nodejs:
     # Used for build and test coverage report
     docker:
       - image: cimg/node:lts
-  python:
+  integration_tests:
     # Used for selenium python testing
     docker:
-      - image: circleci/python:3.10-browsers
+      - image: cimg/base:2022.06
 
 jobs:
   build:
@@ -55,7 +55,7 @@ jobs:
 
   test:
     # Setup python docker and environment
-    executor: python
+    executor: integration_tests
     environment:
       CC_TEST_REPORTER_ID: 7b937cd9a0339675686ec07687f790ae70de84f3f670ec53c0e9b5689a203176
     steps:

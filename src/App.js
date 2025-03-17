@@ -33,9 +33,15 @@ const App = () => {
       <GlobalStyles />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/trips" element={<TripsPage />} />
-        {Object.entries(trips).map((trip) => {
-          return <Route path={`/trips/${trip}`} element={<Trip />} />;
+        <Route path="/trips" element={<TripsPage trips={trips} />} />
+        {Object.entries(trips).map(([year, details]) => {
+          return (
+            <Route
+              key={year}
+              path={`/trips/${year}`}
+              element={<Trip details={details} />}
+            />
+          );
         })}
         <Route path="*" element={<NotFound />} status={404} />
       </Routes>

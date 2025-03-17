@@ -3,10 +3,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { StyledMain } from "./TripsPage.styled";
 
-const TripsPage = () => {
+const TripsPage = ({ trips }) => {
   return (
-    <StyledMain id="Incoming">
-      <Link to="/trips/2024">2024</Link>
+    <StyledMain>
+      {Object.entries(trips).map(([year]) => {
+        return (
+          <Link key={year} to={`/trips/${year}`}>
+            {year}
+          </Link>
+        );
+      })}
     </StyledMain>
   );
 };

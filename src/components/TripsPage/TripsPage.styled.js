@@ -11,4 +11,9 @@ export const StyledMain = styled.section`
   .title {
     font-size: clamp(40px, 5vw, 60px);
   }
+
+  a:hover,
+  a:active {
+    background-color: red;
+  }
 `;

@@ -6,11 +6,14 @@ import { StyledMain } from "./TripsPage.styled";
 const TripsPage = ({ trips }) => {
   return (
     <StyledMain>
+      <h2 className="heading">Chapters</h2>
       {Object.entries(trips).map(([year]) => {
         return (
-          <Link key={year} to={`/trips/${year}`}>
-            {year}
-          </Link>
+          <p>
+            <Link key={year} to={`/trips/${year}`}>
+              {year}
+            </Link>
+          </p>
         );
       })}
     </StyledMain>

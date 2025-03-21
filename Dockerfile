@@ -1,25 +1,26 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 USER root
 
 ENV BUNDLE_SILENCE_ROOT_WARNING=1
 
+# Install dependencies
 RUN apt-get update && apt-get -y install curl gnupg unzip wget
 
 # Install Nginx
-RUN set -ex &&\
-  apt-get install -y software-properties-common &&\
-  add-apt-repository -y ppa:nginx/stable &&\
-  apt-get install -y nginx &&\
-  rm -rf /var/lib/apt/lists/* &&\
+RUN apt-get update && \
+  apt-get install -y software-properties-common nginx && \
+  rm -rf /var/lib/apt/lists/* && \
   chown -R www-data:www-data /var/lib/nginx
 
 # Copy nginx config
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Set the Chrome repo
-RUN wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -\ 
-  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list
-RUN apt-get update && apt-get -y install google-chrome-stable
+RUN mkdir -p /etc/apt/keyrings && \
+  wget -qO- https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg && \
+  echo "deb [signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google-chrome.list
+
+RUN apt-get update && apt-get install -y google-chrome-stable
 
 # Install nodejs
 RUN wget -qO - https://deb.nodesource.com/setup_20.x | bash -

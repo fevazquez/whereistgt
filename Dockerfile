@@ -22,13 +22,6 @@ RUN mkdir -p /etc/apt/keyrings && \
 
 RUN apt-get update && apt-get install -y google-chrome-stable
 
-# Manually fetch ChromeDriver version matching installed Chrome
-RUN CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}') && \
-  echo "Detected Chrome version: $CHROME_VERSION" && \
-  wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
-  unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
-  rm /tmp/chromedriver.zip && chmod +x /usr/local/bin/chromedriver
-
 # Install nodejs
 RUN wget -qO - https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get -y install nodejs

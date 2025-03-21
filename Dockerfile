@@ -22,6 +22,13 @@ RUN mkdir -p /etc/apt/keyrings && \
 
 RUN apt-get update && apt-get install -y google-chrome-stable
 
+# Manually fetch ChromeDriver version matching installed Chrome
+RUN CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}') && \
+  echo "Detected Chrome version: $CHROME_VERSION" && \
+  wget -q "https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
+  unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
+  rm /tmp/chromedriver.zip && chmod +x /usr/local/bin/chromedriver
+
 # Install nodejs
 RUN wget -qO - https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get -y install nodejs
@@ -39,11 +46,6 @@ EXPOSE 80
 # Install python3
 RUN apt-get install -y python3 python3-distutils python3-apt
 RUN curl -sL https://bootstrap.pypa.io/get-pip.py | python3
-
-# Chrome Driver
-RUN mkdir -p /opt/selenium\
-  && wget -q https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.119/linux64/chrome-linux64.zip -O /opt/selenium/chrome-linux64.zip\
-  && cd /opt/selenium; unzip /opt/selenium/chrome-linux64.zip; rm -rf chrome-linux64.zip; ln -fs /opt/selenium/chromedriver /usr/local/bin/chromedriver;
 
 # Install python dependencies
 RUN pip install setuptools pip --upgrade --force-reinstall

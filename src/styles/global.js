@@ -20,6 +20,23 @@ export const GlobalStyles = createGlobalStyle`
     color: ${colors.text};
     text-rendering: optimizeLegibility;
   }
-`
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+    text-decoration-skip-ink: auto;
+    color: inherit;
+    position: relative;
+    transition: var(--transition);
+    &:hover,
+    &:focus {
+      color: ${({ theme }) => theme.main};
+    }
+
+    &.inline-link {
+      ${({ theme }) => theme.inlineLink};
+    }
+  }
+`;
 
 export default GlobalStyles;

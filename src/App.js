@@ -3,9 +3,10 @@ import { useOnClickOutside } from "./hooks";
 import { Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles, theme } from "./styles";
-import { HomePage, NotFound } from "./components";
+import { HomePage, TripsPage, Trip, NotFound } from "./components";
+import trips from "./trips/trips.json";
 
-const App =()=> {
+const App = () => {
   // Used for mobile detection
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -31,16 +32,21 @@ const App =()=> {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage />
-          }
-        />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/trips" element={<TripsPage trips={trips} />} />
+        {Object.entries(trips).map(([year, details]) => {
+          return (
+            <Route
+              key={year}
+              path={`/trips/${year}`}
+              element={<Trip details={details} />}
+            />
+          );
+        })}
         <Route path="*" element={<NotFound />} status={404} />
       </Routes>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

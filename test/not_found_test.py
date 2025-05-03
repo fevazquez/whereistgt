@@ -15,7 +15,3 @@ def test_body(browser, open_url):
     browser.get("http://localhost/fake-path")
     screen_text = browser.find_element(By.XPATH, "//p").text
     assert screen_text == "Here there be dragons"
-
-def test_teardown(browser, open_url):
-    browser.close()
-    browser.quit()
